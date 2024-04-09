@@ -9,12 +9,12 @@ class CLASS_SSSalinityDaxi {
     float p_paraSSSalinityDaxi = 0;
     float p_tempSSSalinityDaxi = 0;
     bool (CLASS_SSSalinityDaxi::*RunningFuncSSSalinityDaxi)();
-    bool Func_Read485SSSalinityDaxi();
-    bool Func_GetParaSSSalinityDaxi();
-    //uint16_t Func_CombineHexSSSalinityDaxi(uint16_t *hexArray);
-    float Func_HexToDecimalSSSalinityDaxi(uint16_t hexData);
+    bool Read485SSSalinityDaxi();
+    bool GetParaSSSalinityDaxi();
+    //uint16_t CombineHexSSSalinityDaxi(uint16_t *hexArray);
+    float HexToDecimalSSSalinityDaxi(uint16_t hexData);
   public:
-    void Func_SetupSSSalinityDaxi();
-    bool Func_RunningSSSalinityDaxi(float *para, float *temp);
+    void SetupSSSalinityDaxi();
+    bool RunningSSSalinityDaxi(float &para, float &temp);
 };
 #endif

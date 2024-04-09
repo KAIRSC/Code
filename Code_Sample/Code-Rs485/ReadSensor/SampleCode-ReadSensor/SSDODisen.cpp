@@ -1,40 +1,40 @@
 #include "SSDODisen.h"
 CLASS_SENSOR485 SSDODisenSENSOR485;
-void CLASS_SSDODisen::Func_SetupSSDODisen() {
-  RunningFuncSSDODisen = &CLASS_SSDODisen::Func_Read485SSDODisen;
+void CLASS_SSDODisen::SetupSSDODisen() {
+  RunningFuncSSDODisen = &CLASS_SSDODisen::Read485SSDODisen;
 }
-bool CLASS_SSDODisen::Func_RunningSSDODisen(float *para, float *temp) {
+bool CLASS_SSDODisen::RunningSSDODisen(float &para, float &temp) {
   bool doneMain = (this ->*RunningFuncSSDODisen)();
   if (doneMain) {
-    *para = p_paraSSDODisen;
-    *temp = p_tempSSDODisen;
+    para = p_paraSSDODisen;
+    temp = p_tempSSDODisen;
   }
   return doneMain;
 }
-bool CLASS_SSDODisen::Func_Read485SSDODisen() {
-  bool done = SSDODisenSENSOR485.Func_Running485_2(p_requestFrameSSDODisen, sizeof(p_requestFrameSSDODisen), p_respondFrameSSDODisen, sizeof(p_respondFrameSSDODisen) / sizeof(uint16_t));
+bool CLASS_SSDODisen::Read485SSDODisen() {
+  bool done = SSDODisenSENSOR485.Running485_2(p_requestFrameSSDODisen, sizeof(p_requestFrameSSDODisen), p_respondFrameSSDODisen, sizeof(p_respondFrameSSDODisen) / sizeof(uint16_t));
   p_paraSSDODisen = 0;
   p_tempSSDODisen = 0;
   if (done) {
-    RunningFuncSSDODisen = &CLASS_SSDODisen::Func_GetParaSSDODisen;
+    RunningFuncSSDODisen = &CLASS_SSDODisen::GetParaSSDODisen;
   }
   return 0;
 }
-bool CLASS_SSDODisen::Func_GetParaSSDODisen() {
+bool CLASS_SSDODisen::GetParaSSDODisen() {
   uint8_t hexParaArray[4] = {0};
   uint8_t  hexTempArray[4] = {0};
   for (uint8_t i = 0 ; i < 4 ; i++) {
     hexParaArray[i] = p_respondFrameSSDODisen[14 - i];
     hexTempArray[i] = p_respondFrameSSDODisen[6 - i];
   }
-  uint32_t hexPara = Func_CombineHexSSDODisen(hexParaArray);
-  uint32_t hexTemp = Func_CombineHexSSDODisen(hexTempArray);
-  p_paraSSDODisen = Func_HexToFloatSSDODisen(hexPara);
-  p_tempSSDODisen = Func_HexToFloatSSDODisen(hexTemp);
-  RunningFuncSSDODisen = &CLASS_SSDODisen::Func_Read485SSDODisen;
+  uint32_t hexPara = CombineHexSSDODisen(hexParaArray);
+  uint32_t hexTemp = CombineHexSSDODisen(hexTempArray);
+  p_paraSSDODisen = HexToFloatSSDODisen(hexPara);
+  p_tempSSDODisen = HexToFloatSSDODisen(hexTemp);
+  RunningFuncSSDODisen = &CLASS_SSDODisen::Read485SSDODisen;
   return 1;
 }
-float CLASS_SSDODisen::Func_HexToFloatSSDODisen(uint32_t hexData) {
+float CLASS_SSDODisen::HexToFloatSSDODisen(uint32_t hexData) {
   uint8_t binary[32];
   int8_t bitSign = 1;
   int8_t bitBias = 0;
@@ -54,7 +54,7 @@ float CLASS_SSDODisen::Func_HexToFloatSSDODisen(uint32_t hexData) {
   hexToFloat =  bitSign * (1 + bitFloat) * pow(2, bitBias);
   return hexToFloat;
 }
-uint32_t CLASS_SSDODisen::Func_CombineHexSSDODisen(uint8_t *hexArray) {
+uint32_t CLASS_SSDODisen::CombineHexSSDODisen(uint8_t *hexArray) {
   uint32_t hexCombine = 0;
   hexCombine |= hexArray[0];
   hexCombine <<= 8;

@@ -1,17 +1,16 @@
 #include "SENSOR485.h"
 #include <ModbusRtu.h>
-CLASS_CONFIGPIN ss485CONFIGPIN;
 #include <SoftwareSerial.h>
 SoftwareSerial serial485(PC11, PC10);
 Modbus master(0, serial485);
 modbus_t registerSend;
-void CLASS_SENSOR485::Func_Setup485(uint16_t baudRate) {
+void CLASS_SENSOR485::Setup485(uint16_t baudRate) {
   serial485.begin(9600);
   master.start();
   master.setTimeOut( 2000 ); // if there is no answer in 2000 ms, roll over
 
 }
-bool CLASS_SENSOR485::Func_Running485( uint16_t *frame, uint8_t sizeofFrame, uint16_t *respondFrame, uint8_t sizeofrespondFrame) {
+bool CLASS_SENSOR485::Running485( uint16_t *frame, uint8_t sizeofFrame, uint16_t *respondFrame, uint8_t sizeofrespondFrame) {
   uint8_t u8state = 0;
   unsigned long u32wait = millis() + 1000;
   uint16_t respondFrame1[sizeofrespondFrame] = {0};
@@ -31,13 +30,13 @@ bool CLASS_SENSOR485::Func_Running485( uint16_t *frame, uint8_t sizeofFrame, uin
         registerSend.u16RegAdd = frame[2]; // start address in slave
         registerSend.u16CoilsNo = frame[3]; // number of elements (coils or registers) to read
         registerSend.au16reg = respondFrame1; // pointer to a memory array in the Arduino
-        digitalWrite(En485, 1);
+        digitalWrite(en485, 1);
         master.query( registerSend); // send query (only once)
         u8state++;
         delay(5);
         break;
       case 2:
-        digitalWrite(En485, 0);
+        digitalWrite(en485, 0);
         master.poll(); // check incoming messages
         if (master.getState() == COM_IDLE) {
           u8state = 0;
@@ -57,15 +56,15 @@ bool CLASS_SENSOR485::Func_Running485( uint16_t *frame, uint8_t sizeofFrame, uin
   }
   return 1;
 }
-bool CLASS_SENSOR485::Func_Running485_2( uint8_t *frame, uint8_t sizeofFrame, uint8_t *respondFrame, uint8_t sizeofrespondFrame) {
+bool CLASS_SENSOR485::Running485_2( uint8_t *frame, uint8_t sizeofFrame, uint8_t *respondFrame, uint8_t sizeofrespondFrame) {
   uint16_t timeout = 30000;
   unsigned long tTimeOut = millis();
   byte check = 0x0C;
   while (millis() -  tTimeOut < timeout) {
-    digitalWrite(En485, 1);
+    digitalWrite(en485, 1);
     serial485.write(frame, sizeofFrame); // Gửi dữ liệu đi
     delay(5);
-    digitalWrite(En485, 0);
+    digitalWrite(en485, 0);
     Serial.print("Response: ");
     for (int j = 0; j < 15; j++) {
       respondFrame[j] = serial485.read();

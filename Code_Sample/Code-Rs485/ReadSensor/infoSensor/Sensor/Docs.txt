@@ -1,0 +1,3 @@
+add 0x01: sensor PH Honde
+add 0x02: sensor DO Renke
+add 0x03: sensor SANLINITY Daxi 

@@ -9,12 +9,12 @@ class CLASS_SSR {
     float p_paraSSR = 0;
     float p_tempSSR = 0;
     bool (CLASS_SSR::*RunningFuncSSR)();
-    bool Func_Read485SSR();
-    bool Func_GetParaSSR();
-    uint32_t Func_CombineHexSSR(uint16_t *hexArray);
-    float Func_HexToFloatSSR(uint32_t hexData);
+    bool Read485SSR();
+    bool GetParaSSR();
+    uint32_t CombineHexSSR(uint16_t *hexArray);
+    float HexToFloatSSR(uint32_t hexData);
   public:
-    void Func_SetupSSR();
-    bool Func_RunningSSR(float *para, float *temp);
+    void SetupSSR();
+    bool RunningSSR(float &para, float &temp);
 };
 #endif

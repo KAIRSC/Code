@@ -1,8 +1,8 @@
 #include "config_pin.h"
-void class_confipin::Setup() {
-  pinMode(En485, OUTPUT);
-  pinMode(Led, OUTPUT);
-  digitalWrite(En485,  HIGH);
-  digitalWrite(Led,  HIGH);
+void class_configpin::Setup() {
+  pinMode(en485, OUTPUT);
+  pinMode(led, OUTPUT);
+  digitalWrite(en485,  HIGH);
+  digitalWrite(led,  HIGH);
   return;
 }

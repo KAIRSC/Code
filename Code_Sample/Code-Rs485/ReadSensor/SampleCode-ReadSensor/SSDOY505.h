@@ -9,12 +9,12 @@ class CLASS_SSDOY505 {
     float p_paraSSDOY505 = 0;
     float p_tempSSDOY505 = 0;
     bool (CLASS_SSDOY505::*RunningFuncSSDOY505)();
-    bool Func_Read485SSDOY505();
-    bool Func_GetParaSSDOY505();
-    uint32_t Func_CombineHexSSDOY505(uint8_t *hexArray);
-    float Func_HexToFloatSSDOY505(uint32_t hexData);
+    bool Read485SSDOY505();
+    bool GetParaSSDOY505();
+    uint32_t CombineHexSSDOY505(uint8_t *hexArray);
+    float HexToFloatSSDOY505(uint32_t hexData);
   public:
-    void Func_SetupSSDOY505();
-    bool Func_RunningSSDOY505(float *para, float *temp);
+    void SetupSSDOY505();
+    bool RunningSSDOY505(float &para, float &temp);
 };
 #endif

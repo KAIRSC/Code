@@ -1,0 +1,62 @@
+I. Daxi_salinity: Adress: 0x04
+Request Frame : 01 03 00 00 00 04 44 99
+Respond Frame: 01 03 08 03 E8 00 03 00 FA 00 01 18 3D
+01: Address slave.
+	03: Function code.
+	04: num of registers.
+	08: num of byte.
+03 E8 00 03: ở đây 03 E8 chuyển về decimal ta được 1000, 00 03 
+có nghĩa là 3 chữ số thập phân => ta được 1.000mS/cm.
+00 FA 00 01: ở đây 00 FA chuyển về decimal ta được 250, 00 01 
+có nghĩ là 1 chữ số thập phân => ta được 25℃.
+
+
+SEND: 04 03 00 00 00 04 44 5C
+GET: 04 03 08 00 00 00 06 01 3F 00 01 FC 2B 
+
+
+
+II.Honde_Ph: address 0x06
+SEND: 02 06 00 00 00 06 09 FB 
+GET: 02 06 02 00 06 7C 8A 
+=> Change address 2->6
+
+Data:
+SEND: 06 03 00 00 00 01 85 BD 
+GET: 06 03 02 03 63 4D 5D 
+convert decimal: 03 63 = 867 mg/l. =? 867 /100 = 8.67 mg/
+
+III.	suprema_PH: 0x01
+	Red  : VCC
+	Black: GND
+	Green: 485A
+	White:  485B
+
+
+IV. DO disen: adress 0x03
+SEND: 03 03 21 00 00 02 CF D5 
+GET: 03 03 04 D3 4C 07 41 E2 A0  => get DO
+convert float32: 41 07 4C D3 = 8.4556256 mg/l.
+
+SEND: 03 03 20 00 00 04 4E 2B
+GET: 03 03 08 7D 61 FF 41 B2 7C 95 3F C9 F4
+convert float32: 41 FF 61 7D = 31.9226℃.
+convert float32: 3F 95 7C B2 = 1.1678%
+
+
+V. DO Y505: adress 0x05
+SEND: 01 10 30 00 00 01 02 05 00 95 03 
+GET: 01 10 30 00 00 01 0E C9 
+=> Change address 1->5
+SEND: 05 10 30 00 00 01 02 01 00 A5 03 
+GET: 05 10 30 00 00 01 0F 4D 
+=> Change address 5->1
+
+Data:
+SEND: 05 03 26 00 00 06 CF 04 
+GET: 05 03 0C 4E 14 00 42 EE A2 7C 3F F7 F7 E5 40 CD D9 
+convert float32: 40 E5 F7 F7 = 7.1865 mg/l.
+convert float32: 3F 7C A2 EE = 0.986% => SAT: 98.6%
+convert float32: 42 00 14 4E =  32.01983℃.
+
+

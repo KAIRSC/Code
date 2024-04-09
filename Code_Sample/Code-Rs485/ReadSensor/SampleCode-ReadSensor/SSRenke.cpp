@@ -1,38 +1,38 @@
 #include "SSRenke.h"
 CLASS_SENSOR485 ssrSENSOR485;
-void CLASS_SSR::Func_SetupSSR() {
-  RunningFuncSSR = &CLASS_SSR::Func_Read485SSR;
+void CLASS_SSR::SetupSSR() {
+  RunningFuncSSR = &CLASS_SSR::Read485SSR;
 }
-bool CLASS_SSR::Func_RunningSSR(float *para, float *temp) {
+bool CLASS_SSR::RunningSSR(float &para, float &temp) {
   bool doneMain = (this ->*RunningFuncSSR)();
   if (doneMain) {
-    *para = p_paraSSR;
-    *temp = p_tempSSR;
+    para = p_paraSSR;
+    temp = p_tempSSR;
   }
   return doneMain;
 }
-bool CLASS_SSR::Func_Read485SSR() {
-  bool done = ssrSENSOR485.Func_Running485( p_SSRrequestFrame, sizeof(p_SSRrequestFrame), p_SSRespondFrame, sizeof(p_SSRespondFrame) / sizeof(uint16_t));
+bool CLASS_SSR::Read485SSR() {
+  bool done = ssrSENSOR485.Running485( p_SSRrequestFrame, sizeof(p_SSRrequestFrame), p_SSRespondFrame, sizeof(p_SSRespondFrame) / sizeof(uint16_t));
   if (done) {
-    RunningFuncSSR = &CLASS_SSR::Func_GetParaSSR;
+    RunningFuncSSR = &CLASS_SSR::GetParaSSR;
   }
   return 0;
 }
-bool CLASS_SSR::Func_GetParaSSR() {
+bool CLASS_SSR::GetParaSSR() {
   uint16_t hexParaArray[4] = {0};
   uint16_t  hexTempArray[4] = {0};
   for (uint8_t i = 0 ; i < 2 ; i++) {
     hexParaArray[i] = p_SSRespondFrame[2 + i];
     hexTempArray[i] = p_SSRespondFrame[4 + i];
   }
-  uint32_t hexPara = Func_CombineHexSSR(hexParaArray);
-  uint32_t hexTemp = Func_CombineHexSSR(hexTempArray);
-  p_paraSSR = Func_HexToFloatSSR(hexPara);
-  p_tempSSR = Func_HexToFloatSSR(hexTemp);
-  RunningFuncSSR = &CLASS_SSR::Func_Read485SSR;
+  uint32_t hexPara = CombineHexSSR(hexParaArray);
+  uint32_t hexTemp = CombineHexSSR(hexTempArray);
+  p_paraSSR = HexToFloatSSR(hexPara);
+  p_tempSSR = HexToFloatSSR(hexTemp);
+  RunningFuncSSR = &CLASS_SSR::Read485SSR;
   return 1;
 }
-float CLASS_SSR::Func_HexToFloatSSR(uint32_t hexData) {
+float CLASS_SSR::HexToFloatSSR(uint32_t hexData) {
   uint8_t binary[32];
   int8_t bitSign = 1;
   int8_t bitBias = 0;
@@ -67,7 +67,7 @@ float CLASS_SSR::Func_HexToFloatSSR(uint32_t hexData) {
   hexToFloat =  bitSign * (1 + bitFloat) * pow(2, bitBias);
   return hexToFloat;
 }
-uint32_t CLASS_SSR::Func_CombineHexSSR(uint16_t *hexArray) {
+uint32_t CLASS_SSR::CombineHexSSR(uint16_t *hexArray) {
   uint32_t hexCombine = 0;
   hexCombine |= hexArray[0];
   hexCombine <<= 16;

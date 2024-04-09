@@ -9,12 +9,12 @@ class CLASS_SSPHSuprama {
     float p_paraSSPHSuprama = 0;
     float p_tempSSPHSuprama = 0;
     bool (CLASS_SSPHSuprama::*RunningFuncSSPHSuprama)();
-    bool Func_Read485SSPHSuprama();
-    bool Func_GetParaSSPHSuprama();
-    uint16_t Func_CombineHexSSPHSuprama(uint8_t *hexArray);
-    float Func_HexToDecimalSSPHSuprama(uint16_t hexData);
+    bool Read485SSPHSuprama();
+    bool GetParaSSPHSuprama();
+    uint16_t CombineHexSSPHSuprama(uint8_t *hexArray);
+    float HexToDecimalSSPHSuprama(uint16_t hexData);
   public:
-    void Func_SetupSSPHSuprama();
-    bool Func_RunningSSPHSuprama(float *para, float *temp);
+    void SetupSSPHSuprama();
+    bool RunningSSPHSuprama(float &para, float &temp);
 };
 #endif
